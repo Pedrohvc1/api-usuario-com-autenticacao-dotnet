@@ -9,6 +9,13 @@ namespace UsuariosApi.Services;
 
 public class TokenService
 {
+    private IConfiguration _configuration;
+
+    public TokenService(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+
     public string GenerateToken(Usuario usuario)
     {
         Claim[] claims = new Claim[]
@@ -19,7 +26,7 @@ public class TokenService
             usuario.DataNascimento.ToString()) //Claim é um objeto que representa uma informação sobre o usuário, ele será passado como parametro para o token
         };
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("9SAFAFWEFWE9FEWFWEFEW54F8WEF489WEF"));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["SymmetricSecurityKey"]));
 
         var signingCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 

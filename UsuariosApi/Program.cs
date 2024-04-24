@@ -12,7 +12,7 @@ using UsuariosApi.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connString = builder.Configuration.GetConnectionString("UsuarioConnection");
+var connString = builder.Configuration["ConnectionStrings:UsuarioConnection"];
 
 builder.Services.AddDbContext<UsuarioDbContext>
     (opts =>
@@ -46,7 +46,7 @@ builder.Services.AddAuthentication(opt =>
     opts.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters //opições de validação do token
     {
         ValidateIssuerSigningKey = true, // Valida a chave de assinatura do emissor
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("9SAFAFWEFWE9FEWFWEFEW54F8WEF489WEF")), // Chave de assinatura
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["SymmetricSecurityKey"])), // Chave de assinatura
         ValidateAudience = false, // Valida o público alvo do token
         ValidateIssuer = false, // Valida o emissor do token
         ClockSkew = TimeSpan.Zero // Define o tempo de tolerância para a validação do token
@@ -77,3 +77,10 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+
+#region exemplo
+
+string nomeSobrenome = "";
+
+#endregion
